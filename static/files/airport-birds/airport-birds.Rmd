@@ -29,7 +29,7 @@ We'll then clean it up a little by adding some columns to indicate the year and 
 
 ```{r load-data}
 # Load raw data
-bird_strikes_raw <- read_csv("Birdstrikes_At_Salt_Lake_City_Intl_Airport_2000-2014.csv")
+bird_strikes_raw <- read_csv("data/Birdstrikes_At_Salt_Lake_City_Intl_Airport_2000-2014.csv")
 
 # Clean up the raw data a little
 bird_strikes <- bird_strikes_raw %>% 
@@ -50,7 +50,7 @@ bird_strikes
 
 Alternativey, click on `bird_strikes` in the "Environmnent" panel on the right to open the dataset in a new tab. Or, run `View()`:
 
-```{r view-data-tab}
+```{r view-data-tab, eval=FALSE}
 View(bird_strikes)
 ```
 
@@ -98,8 +98,12 @@ Things to try:
 - Try including `sort = TRUE` in `count()`. Why would you want to sort this list? Why would you not want to sort this list?
 
 ```{r count-year}
-bird_strikes %>% 
+strikes_per_year <- bird_strikes %>% 
   count(Year)
+
+ggplot(data = strikes_per_year, 
+       mapping = aes(x = Year, y = n)) +
+  geom_col()
 ```
 
 Are there any months that are more or less deadly for birds (use the `Month` variable)? Why do you think this pattern exists?
@@ -143,7 +147,7 @@ ggplot(data = birds_time_month,
        y = "Bird strikes",
        title = "Bird strikes per month",
        subtitle = "Autumn nights are bad for birds",
-       caption = "Source: FAA Wildlife Strike Database")
+       caption = "Source: FAA Wildlife Strike Database") +
   facet_wrap(~ Time, ncol = 1)
 ```
 
@@ -185,17 +189,17 @@ What can we learn from this plot? What's going on in August and October? View th
 Summarize the total damages by some other variable, like cloud cover (`Cloudy`), time of day (`Time`), phase of flight (`Phase`), or something else in the dataset. Are there times, weather patterns, or phases of the flight that cause more or less expensive damage?
 
 ```{r summarize-damages-something-else}
-strike_damages_XXXX <- bird_strikes %>% 
-  group_by(SOMETHING_HERE) %>% 
-  summarize(total_damages = sum(Cost, na.rm = TRUE))
-
-ggplot(data = strike_damages_XXXX, 
-       mapping = aes(x = SOMETHING_HERE, y = total_damages)) + 
-  geom_col() +
-  scale_y_continuous(labels = dollar) +
-  labs(x = "Month",
-       y = "Total damages",
-       title = "Something interesting",
-       subtitle = "Something else interesting",
-       source = "Source: FAA Wildlife Strike Database")
+# strike_damages_XXXX <- bird_strikes %>% 
+#   group_by(SOMETHING_HERE) %>% 
+#   summarize(total_damages = sum(Cost, na.rm = TRUE))
+# 
+# ggplot(data = strike_damages_XXXX, 
+#        mapping = aes(x = SOMETHING_HERE, y = total_damages)) + 
+#   geom_col() +
+#   scale_y_continuous(labels = dollar) +
+#   labs(x = "Month",
+#        y = "Total damages",
+#        title = "Something interesting",
+#        subtitle = "Something else interesting",
+#        source = "Source: FAA Wildlife Strike Database")
 ```
